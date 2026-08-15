@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>星の海図 — 黄道と天球のシミュレーター</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="eyebrow">De Revolutionibus — 天球運行の観測台</div>
+      <h1>黄道と<em>天の見え</em>のシミュレーター</h1>
+      <div class="rule"></div>
+      <p>左は俯瞰図(太陽中心⇄地球中心を切替可能)、右は地上のある地点から見上げた空です。惑星の表示は下のチェックで切り替えられます。</p>
+    </header>
+
+    <div class="stripbar">
+      <div class="mode-toggle">
+        <button id="btnHelio" class="active">太陽中心(地動説)</button>
+        <button id="btnGeo">地球中心(天動説)</button>
+      </div>
+      <div class="body-toggles" id="bodyToggles"></div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <h2><span class="no">I.</span> 俯瞰図</h2>
+        <p class="sub" id="topSub">円軌道による簡略モデル(離心率・軌道傾斜は無視)。</p>
+        <canvas id="topView" width="520" height="520"></canvas>
+      </div>
+
+      <div class="panel">
+        <h2><span class="no">II.</span> 地上から見た空</h2>
+        <p class="sub">中心が天頂、外周が地平線の円形パノラマです。北を上、時計回りに東・南・西。</p>
+        <canvas id="skyView" width="520" height="520"></canvas>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="ctrl-grid">
+        <div class="field">
+          <label>日付(基準日からの日数) <span class="val" id="dateVal">3月20日ごろ</span></label>
+          <input type="range" id="dayOfYear" min="0" max="1500" step="1" value="0">
+        </div>
+        <div class="field">
+          <label>時刻 <span class="val" id="hourVal">12:00</span></label>
+          <input type="range" id="hour" min="0" max="24" step="0.1" value="12">
+        </div>
+        <div class="field">
+          <label>観測地の緯度 <span class="val" id="latVal">+35.7°(東京)</span></label>
+          <input type="range" id="lat" min="-70" max="70" step="0.5" value="35.7">
+        </div>
+        <div class="animBtns">
+          <button id="animBtn" class="animBtn">▶ 時刻を進める</button>
+          <button id="animDayBtn" class="animBtn">▶ 日を進める</button>
+        </div>
+      </div>
+      <div class="readout">
+        <span>太陽の黄経: <b id="roLambda">—</b></span>
+        <span>太陽の赤緯: <b id="roDec">—</b></span>
+        <span>太陽の高度: <b id="roAlt">—</b></span>
+        <span>太陽の方位: <b id="roAz">—</b></span>
+        <span>黄道十二宮: <b id="roZodiac">—</b></span>
+      </div>
+    </div>
+
+    <footer>
+      円軌道・離心率ゼロ・全惑星が黄道面上にあるという簡略モデルです。歳差運動・章動・大気差・均時差は考慮していません。<br>
+      観測地の経度は考慮せず、時刻＝その場の見かけの太陽時として近似計算しています。
+    </footer>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+
+</html>
