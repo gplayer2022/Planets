@@ -28,8 +28,8 @@ body {
   padding: 28px 20px 60px;
 }
 
-.wrap {
-  max-width: 1180px;
+.page-wrap {
+  max-width: 1700px;
   margin: 0 auto;
 }
 
@@ -75,7 +75,7 @@ header .rule {
   background: linear-gradient(90deg, transparent, var(--brass), transparent);
 }
 
-.stripbar {
+.control-strip {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -114,13 +114,14 @@ header .rule {
   color: var(--parchment);
 }
 
-.body-toggles {
+.body-toggle-row {
   display: flex;
   flex-wrap: wrap;
   gap: 14px;
+  align-items: center;
 }
 
-.body-toggles label {
+.body-toggle-row label {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -131,28 +132,49 @@ header .rule {
   user-select: none;
 }
 
-.body-toggles input {
+.body-toggle-row input {
   accent-color: var(--brass);
   cursor: pointer;
 }
 
-.swatch {
+.color-swatch {
   width: 9px;
   height: 9px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.panels {
+.toggle-divider {
+  width: 1px;
+  align-self: stretch;
+  background: var(--line);
+  margin: 0 2px;
+}
+
+.panel-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, minmax(320px, 1fr));
   gap: 22px;
   margin-bottom: 22px;
 }
 
-@media(max-width:880px) {
-  .panels {
+@media (max-width: 1100px) {
+  .panel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .panel:nth-child(3) {
+    grid-column: 1 / 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .panel-grid {
     grid-template-columns: 1fr;
+  }
+
+  .panel:nth-child(3) {
+    grid-column: auto;
   }
 }
 
@@ -181,14 +203,14 @@ header .rule {
   gap: 10px;
 }
 
-.panel h2 .no {
+.panel h2 .panel-number {
   font-family: 'Zen Kaku Gothic New', sans-serif;
   font-size: 11px;
   color: var(--brass-dim);
   letter-spacing: 0.15em;
 }
 
-.panel .sub {
+.panel .panel-subtitle {
   font-size: 12px;
   color: var(--parchment-dim);
   margin: 0 0 12px;
@@ -202,7 +224,7 @@ canvas {
   background: #070c17;
 }
 
-.controls {
+.controls-panel {
   background: linear-gradient(180deg, var(--ink-2), var(--ink));
   border: 1px solid var(--line);
   padding: 18px 24px 20px;
@@ -210,7 +232,7 @@ canvas {
   margin-bottom: 20px;
 }
 
-.controls::before {
+.controls-panel::before {
   content: "";
   position: absolute;
   inset: 6px;
@@ -218,15 +240,15 @@ canvas {
   pointer-events: none;
 }
 
-.ctrl-grid {
+.control-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr) auto;
+  grid-template-columns: repeat(3, 1fr) auto auto;
   gap: 22px;
   align-items: end;
 }
 
-@media(max-width:820px) {
-  .ctrl-grid {
+@media(max-width:900px) {
+  .control-grid {
     grid-template-columns: 1fr 1fr;
     row-gap: 18px;
   }
@@ -241,7 +263,7 @@ canvas {
   margin-bottom: 8px;
 }
 
-.field .val {
+.field .field-value {
   color: var(--parchment);
   font-family: 'Cormorant Garamond', serif;
   font-size: 16px;
@@ -278,7 +300,7 @@ input[type=range]::-moz-range-thumb {
   cursor: pointer;
 }
 
-button.animBtn {
+.animate-button {
   font-family: 'Zen Kaku Gothic New', sans-serif;
   font-size: 12px;
   letter-spacing: 0.08em;
@@ -292,25 +314,23 @@ button.animBtn {
   height: fit-content;
 }
 
-button.animBtn:hover {
+.animate-button:hover {
   background: rgba(201, 162, 75, 0.1);
   border-color: var(--brass);
 }
 
-button.animBtn.active {
+.animate-button.active {
   background: var(--brass);
   color: var(--ink);
   font-weight: 600;
 }
 
-.disabled {
-  /* クリックやホバーイベントを完全に無効化 */
+.animate-button.is-disabled {
   pointer-events: none;
-  /* 見た目も「押せない感」を出す */
-  opacity: 0.5;          /* 薄くする */
+  opacity: 0.5;
 }
 
-.readout {
+.readout-row {
   margin-top: 16px;
   padding-top: 14px;
   border-top: 1px solid var(--line);
@@ -322,19 +342,19 @@ button.animBtn.active {
   color: var(--parchment-dim);
 }
 
-.readout b {
+.readout-row b {
   color: var(--verdigris);
   font-weight: 500;
 }
 
-details.math {
+.math-details {
   background: linear-gradient(180deg, var(--ink-2), var(--ink));
   border: 1px solid var(--line);
   padding: 16px 22px;
   margin-bottom: 20px;
 }
 
-details.math summary {
+.math-details summary {
   cursor: pointer;
   font-family: 'Cormorant Garamond', serif;
   font-size: 18px;
@@ -344,19 +364,19 @@ details.math summary {
   outline: none;
 }
 
-details.math summary::-webkit-details-marker {
+.math-details summary::-webkit-details-marker {
   display: none;
 }
 
-details.math summary::before {
+.math-details summary::before {
   content: "▸ ";
 }
 
-details.math[open] summary::before {
+.math-details[open] summary::before {
   content: "▾ ";
 }
 
-.math ol {
+.math-details ol {
   margin: 14px 0 4px;
   padding-left: 22px;
   color: var(--parchment-dim);
@@ -364,11 +384,11 @@ details.math[open] summary::before {
   line-height: 1.9;
 }
 
-.math ol li b {
+.math-details ol li b {
   color: var(--parchment);
 }
 
-.math code {
+.math-details code {
   background: rgba(201, 162, 75, 0.1);
   padding: 1px 6px;
   color: var(--verdigris);
