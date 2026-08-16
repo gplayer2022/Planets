@@ -56,7 +56,7 @@ header h1 {
 }
 
 header h1 em {
-  font-style: italic;
+  font-style: normal;
   color: var(--brass);
 }
 
@@ -64,7 +64,7 @@ header p {
   font-size: 14.5px;
   color: var(--parchment-dim);
   max-width: 600px;
-  margin: 0 auto;
+  margin: 0 auto 12px;
   line-height: 1.7;
 }
 
@@ -73,6 +73,34 @@ header .rule {
   height: 1px;
   margin: 16px auto 0;
   background: linear-gradient(90deg, transparent, var(--brass), transparent);
+}
+
+header ol {
+  margin: 0 auto;
+  display: inline-block;
+  text-align: left;
+  color: var(--parchment-dim);
+  padding: 0;
+  list-style: none;
+  /* ローマ数字カウンターの準備 */
+  counter-reset: roman-num;
+}
+
+header ol li {
+  /* 項目ごとに番号を1増やす */
+  counter-increment: roman-num;
+  display: grid;
+  /* [数字用エリアの幅] [本文用エリア] */
+  grid-template-columns: 3em 1fr;
+  font-size: 0.9rem;
+}
+
+/* 数字（ローマ数字）の装飾 */
+header ol li::before {
+  /* ローマ数字＋ピリオドを出力 */
+  content: "図" counter(roman-num, upper-roman) ":";
+  /* ★数字を左揃えにする */
+  text-align: left;
 }
 
 .control-strip {
@@ -347,52 +375,14 @@ input[type=range]::-moz-range-thumb {
   font-weight: 500;
 }
 
-.math-details {
-  background: linear-gradient(180deg, var(--ink-2), var(--ink));
-  border: 1px solid var(--line);
-  padding: 16px 22px;
-  margin-bottom: 20px;
-}
-
-.math-details summary {
-  cursor: pointer;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 18px;
-  font-weight: 600;
+#epicycle-planet-select {
+  margin-left: auto;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 12px;
+  background: var(--ink);
   color: var(--brass);
-  list-style: none;
-  outline: none;
-}
-
-.math-details summary::-webkit-details-marker {
-  display: none;
-}
-
-.math-details summary::before {
-  content: "▸ ";
-}
-
-.math-details[open] summary::before {
-  content: "▾ ";
-}
-
-.math-details ol {
-  margin: 14px 0 4px;
-  padding-left: 22px;
-  color: var(--parchment-dim);
-  font-size: 13.5px;
-  line-height: 1.9;
-}
-
-.math-details ol li b {
-  color: var(--parchment);
-}
-
-.math-details code {
-  background: rgba(201, 162, 75, 0.1);
-  padding: 1px 6px;
-  color: var(--verdigris);
-  font-style: normal;
+  border: 1px solid var(--brass-dim);
+  padding: 5px 8px;
 }
 
 footer {

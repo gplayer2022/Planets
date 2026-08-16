@@ -3,8 +3,14 @@
 
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>星の海図 — 黄道と天球のシミュレーター</title>
+  <meta name="description" content="黄道と天球のシミュレーター">
+  <meta property="og:title" content="Planets">
+  <meta property="og:description" content="黄道と天球のシミュレーター">
+  <meta property="og:site_name" content="Planets">
+  <meta property="og:locale" content="ja_JP">
+  <title>黄道と天球のシミュレーター</title>
   <link rel="shortcut icon" href="favicon.ico">
   <link rel="stylesheet" href="style.css">
 
@@ -25,9 +31,14 @@
 
     <header>
       <div class="eyebrow">De Revolutionibus — 天球運行の観測台</div>
-      <h1>黄道と<em>天の見え</em>のシミュレーター</h1>
+      <h1><em>黄道</em>と天球のシミュレーター</h1>
       <div class="rule"></div>
-      <p>左は俯瞰図（太陽中心⇄地球中心を切替可能）、右は地上のある地点から見上げた空です。惑星の表示は下のチェックで切り替えられます。</p>
+      <p>3つの図を同期して動かすことが可能です。<br>図Iと図IIの惑星の表示はチェックボックスで切り替えられます。</p>
+      <ol>
+        <li>俯瞰図（太陽中心か地球中心かを切替可能）</li>
+        <li>地上のある地点から見上げた空</li>
+        <li>導円と周転円の拡大図（表示する惑星をコンボボックスで切り替え可能）</li>
+      </ol>
     </header>
 
     <div class="control-strip">
@@ -53,8 +64,7 @@
 
       <div class="panel">
         <h2><span class="panel-number">III.</span> 導円・周転円の拡大図
-          <select id="epicycle-planet-select"
-            style="margin-left:auto;font-family:'Zen Kaku Gothic New',sans-serif;font-size:12px;background:var(--ink);color:var(--brass);border:1px solid var(--brass-dim);padding:5px 8px;"></select>
+          <select id="epicycle-planet-select"></select>
         </h2>
         <p class="panel-subtitle">
           地球を中心に固定し、選んだ惑星だけを圧縮なしの実寸比率で描いた図です。破線が導円、実線が周転円、その先の点が実際の惑星の位置です。外惑星描画時にのみ現れる薄い実線は、地球から1天文単位（太陽と地球の平均距離）ごとに描画されています。導円のベクトル+周転円のベクトル=惑星の位置、という関係がそのまま絵になっています。
