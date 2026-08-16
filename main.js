@@ -493,7 +493,7 @@
     epicycleContext.fillStyle = planet.color; epicycleContext.shadowColor = planet.color; epicycleContext.shadowBlur = 10;
     epicycleContext.fill(); epicycleContext.shadowBlur = 0;
     epicycleContext.fillStyle = 'rgba(243,236,216,0.95)'; epicycleContext.font = '12px "Zen Kaku Gothic New"';
-    epicycleContext.fillText(planet.label + '(今日の位置)', planetScreenPoint.x + 10, planetScreenPoint.y + 4);
+    epicycleContext.fillText(planet.label, planetScreenPoint.x + 10, planetScreenPoint.y + 4);
 
     // 注記
     epicycleContext.fillStyle = 'rgba(201,162,75,0.7)'; epicycleContext.font = '10.5px "Zen Kaku Gothic New"';
