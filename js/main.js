@@ -1,4 +1,4 @@
-(function () {
+function main() {
   const OBLIQUITY_RADIANS = 23.4394 * Math.PI / 180;
 
   const EARTH = { orbitRadiusAU: 1.000, orbitPeriodDays: 365.25, initialPhaseDegrees: 180 };
@@ -28,21 +28,16 @@
   const overheadSubtitle = document.getElementById('overhead-view-subtitle');
 
   // ---- 惑星表示チェックボックス ----
-  const bodyVisibility = {};
-  const toggleRow = document.getElementById('planet-visibility-toggles');
   planets.forEach(planet => {
-    bodyVisibility[planet.id] = true;
-    const label = document.createElement('label');
-    label.innerHTML = `<span class="color-swatch" style="background:${planet.color}"></span>
-      <input type="checkbox" checked data-planet-id="${planet.id}"> ${planet.label}`;
-    toggleRow.appendChild(label);
-  });
-  toggleRow.addEventListener('change', event => {
-    if (event.target.matches('input[type=checkbox]')) {
-      bodyVisibility[event.target.dataset.planetId] = event.target.checked;
+    const planetIElem = document.getElementById(planet.id);
+    planetIElem.addEventListener('change', event => {
       render();
-    }
+    });
   });
+  function checkBodyVisibility(planetId) {
+    const planetIElem = document.getElementById(planetId);
+    return planetIElem.checked;
+  }
 
   // ---- 導円・周転円 拡大図パネルの惑星選択 ----
   const epicyclePlanetSelect = document.getElementById('epicycle-planet-select');
@@ -179,7 +174,7 @@
     const orbitReferenceAlpha = Math.max(0, 1 - geocentricBlend * 1.6);
     if (orbitReferenceAlpha > 0.02) {
       planets.forEach(planet => {
-        if (!bodyVisibility[planet.id]) return;
+        if (!checkBodyVisibility(planet.id)) return;
         const orbitRadiusPx = Math.sqrt(planet.orbitRadiusAU) * pixelsPerSqrtAU;
         overheadContext.beginPath(); overheadContext.arc(canvasCenterX, canvasCenterY, orbitRadiusPx, 0, Math.PI * 2);
         overheadContext.strokeStyle = `rgba(201,162,75,${0.18 * orbitReferenceAlpha})`; overheadContext.lineWidth = 1; overheadContext.stroke();
@@ -203,7 +198,7 @@
     if (geocentricBlend > 0.15) {
       const trailAlpha = Math.min(1, (geocentricBlend - 0.15) / 0.5);
       planets.forEach(planet => {
-        if (!bodyVisibility[planet.id]) return;
+        if (!checkBodyVisibility(planet.id)) return;
         const trailWindowDays = 900, trailStepDays = 3;
         overheadContext.beginPath();
         let isFirstPoint = true;
@@ -236,7 +231,7 @@
 
     // 惑星
     planets.forEach(planet => {
-      if (!bodyVisibility[planet.id]) return;
+      if (!checkBodyVisibility(planet.id)) return;
       const heliocentricPoint = heliocentricPosition(planet.orbitRadiusAU, planet.orbitPeriodDays, state.dayOfYear, planet.initialPhaseDegrees);
       const screenPoint = projectToScreen(applyGeocentricOffset(heliocentricPoint));
       overheadContext.beginPath(); overheadContext.arc(screenPoint.x, screenPoint.y, planet.markerRadiusPx, 0, Math.PI * 2);
@@ -373,7 +368,7 @@
     }
 
     planets.forEach(planet => {
-      if (!bodyVisibility[planet.id]) return;
+      if (!checkBodyVisibility(planet.id)) return;
       const heliocentricPoint = heliocentricPosition(planet.orbitRadiusAU, planet.orbitPeriodDays, state.dayOfYear, planet.initialPhaseDegrees);
       const eclipticLongitudeDegrees = normalizeDegrees(radiansToDegrees(Math.atan2(
         heliocentricPoint.y - state.earthPosition.y, heliocentricPoint.x - state.earthPosition.x)));
@@ -581,4 +576,6 @@
   }
 
   render();
-})();
+}
+
+document.addEventListener('DOMContentLoaded', main);

@@ -12,7 +12,7 @@
   <meta property="og:locale" content="ja_JP">
   <title>黄道と天球のシミュレーター</title>
   <link rel="shortcut icon" href="favicon.ico">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6F6XQSYCPP"></script>
@@ -33,7 +33,7 @@
       <div class="eyebrow">De Revolutionibus — 天球運行の観測台</div>
       <h1><em>黄道</em>と天球のシミュレーター</h1>
       <div class="rule"></div>
-      <p>3つの図を同期して動かすことが可能です。<br>図Iと図IIの惑星の表示はチェックボックスで切り替えられます。</p>
+      <p>3つの図を同期して動かすことが可能です。<br>図Iと図IIの惑星の表示はチェックボックスで切替可能です。</p>
       <ol>
         <li>俯瞰図（太陽中心か地球中心かを切替可能）</li>
         <li>地上のある地点から見上げた空</li>
@@ -46,7 +46,28 @@
         <button id="heliocentric-button" class="active">太陽中心（地動説）</button>
         <button id="geocentric-button">地球中心（天動説）</button>
       </div>
-      <div class="body-toggle-row" id="planet-visibility-toggles"></div>
+      <div class="body-toggle-row" id="planet-visibility-toggles">
+        <label>
+          <span class="color-swatch" style="background:#8fb3c9"></span>
+          <input type="checkbox" checked data-planet-id="mercury" id="mercury"> 水星
+        </label>
+        <label>
+          <span class="color-swatch" style="background:#e0b06a"></span>
+          <input type="checkbox" checked data-planet-id="venus" id="venus"> 金星
+        </label>
+        <label>
+          <span class="color-swatch" style="background:#c1583f"></span>
+          <input type="checkbox" checked data-planet-id="mars" id="mars"> 火星
+        </label>
+        <label>
+          <span class="color-swatch" style="background:#d8c39a"></span>
+          <input type="checkbox" checked data-planet-id="jupiter" id="jupiter"> 木星
+        </label>
+        <label>
+          <span class="color-swatch" style="background:#a89a72"></span>
+          <input type="checkbox" checked data-planet-id="saturn" id="saturn"> 土星
+        </label>
+      </div>
     </div>
 
     <div class="panel-grid">
@@ -105,7 +126,7 @@
     </footer>
   </div>
 
-  <script src="main.js"></script>
+  <script src="js/main.js"></script>
 </body>
 
 </html>

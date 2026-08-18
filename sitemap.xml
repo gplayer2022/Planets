@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://gplayer2022.github.io/Planets/</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+  <!-- クロール可 -->
+  <url>
+    <loc>https://gplayer2022.github.io/Planets/index.html</loc>
+    <lastmod>2026-08-19</lastmod>
+  </url>
+</urlset>
