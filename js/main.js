@@ -26,6 +26,7 @@ function main() {
   const overheadContext = overheadCanvas.getContext('2d');
   const skyContext = skyCanvas.getContext('2d');
   const overheadSubtitle = document.getElementById('overhead-view-subtitle');
+  const trailWindowDaySlider = document.getElementById('trail-window-day-slider');
 
   // ---- 惑星表示チェックボックス ----
   planets.forEach(planet => {
@@ -198,8 +199,11 @@ function main() {
     if (geocentricBlend > 0.15) {
       const trailAlpha = Math.min(1, (geocentricBlend - 0.15) / 0.5);
       planets.forEach(planet => {
-        if (!checkBodyVisibility(planet.id)) return;
-        const trailWindowDays = 900, trailStepDays = 3;
+        if (!checkBodyVisibility(planet.id)) {
+          return;
+        }
+        const trailWindowDays = trailWindowDaySlider.value;
+        const trailStepDays = 3;
         overheadContext.beginPath();
         let isFirstPoint = true;
         for (let d = state.dayOfYear - trailWindowDays; d <= state.dayOfYear; d += trailStepDays) {
@@ -226,15 +230,19 @@ function main() {
     overheadContext.beginPath(); overheadContext.arc(sunScreenPoint.x, sunScreenPoint.y, 9, 0, Math.PI * 2);
     overheadContext.fillStyle = SUN_COLOR; overheadContext.shadowColor = SUN_COLOR; overheadContext.shadowBlur = 18;
     overheadContext.fill(); overheadContext.shadowBlur = 0;
-    overheadContext.fillStyle = 'rgba(243,236,216,0.85)'; overheadContext.font = '10px "Zen Kaku Gothic New"';
+    overheadContext.fillStyle = 'rgba(243,236,216,0.85)';
+    overheadContext.font = '10px "Zen Kaku Gothic New"';
     overheadContext.fillText('太陽', sunScreenPoint.x + 10, sunScreenPoint.y + 3);
 
     // 惑星
     planets.forEach(planet => {
-      if (!checkBodyVisibility(planet.id)) return;
+      if (!checkBodyVisibility(planet.id)) {
+        return;
+      }
       const heliocentricPoint = heliocentricPosition(planet.orbitRadiusAU, planet.orbitPeriodDays, state.dayOfYear, planet.initialPhaseDegrees);
       const screenPoint = projectToScreen(applyGeocentricOffset(heliocentricPoint));
-      overheadContext.beginPath(); overheadContext.arc(screenPoint.x, screenPoint.y, planet.markerRadiusPx, 0, Math.PI * 2);
+      overheadContext.beginPath();
+      overheadContext.arc(screenPoint.x, screenPoint.y, planet.markerRadiusPx, 0, Math.PI * 2);
       overheadContext.fillStyle = planet.color; overheadContext.fill();
       overheadContext.fillStyle = 'rgba(243,236,216,0.8)'; overheadContext.font = '10px "Zen Kaku Gothic New"';
       overheadContext.fillText(planet.label, screenPoint.x + 8, screenPoint.y + 3);
@@ -242,23 +250,30 @@ function main() {
 
     // 地球 + 昼夜 + 観測者
     const earthScreenPoint = projectToScreen(applyGeocentricOffset(state.earthPosition));
-    overheadContext.beginPath(); overheadContext.arc(earthScreenPoint.x, earthScreenPoint.y, 4.5, 0, Math.PI * 2);
-    overheadContext.fillStyle = EARTH_COLOR; overheadContext.fill();
-    overheadContext.fillStyle = 'rgba(243,236,216,0.85)'; overheadContext.font = '10px "Zen Kaku Gothic New"';
+    overheadContext.beginPath();
+    overheadContext.arc(earthScreenPoint.x, earthScreenPoint.y, 4.5, 0, Math.PI * 2);
+    overheadContext.fillStyle = EARTH_COLOR;
+    overheadContext.fill();
+    overheadContext.fillStyle = 'rgba(243,236,216,0.85)';
+    overheadContext.font = '10px "Zen Kaku Gothic New"';
     overheadContext.fillText('地球', earthScreenPoint.x + 8, earthScreenPoint.y + 3);
 
     const directionToSunRadians = degreesToRadians(state.sunEclipticLongitudeDegrees + 180);
     overheadContext.save();
     overheadContext.beginPath();
     overheadContext.arc(earthScreenPoint.x, earthScreenPoint.y, 4.5, directionToSunRadians - Math.PI / 2, directionToSunRadians + Math.PI / 2);
-    overheadContext.closePath(); overheadContext.fillStyle = 'rgba(20,15,10,0.8)'; overheadContext.fill();
+    overheadContext.closePath();
+    overheadContext.fillStyle = 'rgba(20,15,10,0.8)';
+    overheadContext.fill();
     overheadContext.restore();
 
     const observerRotationRadians = degreesToRadians(15 * (state.hour - 12) + 180);
     const observerX = earthScreenPoint.x + 4.6 * Math.cos(directionToSunRadians + Math.PI + observerRotationRadians);
     const observerY = earthScreenPoint.y + 4.6 * Math.sin(directionToSunRadians + Math.PI + observerRotationRadians);
-    overheadContext.beginPath(); overheadContext.arc(observerX, observerY, 1.6, 0, Math.PI * 2);
-    overheadContext.fillStyle = '#f4e3a1'; overheadContext.fill();
+    overheadContext.beginPath();
+    overheadContext.arc(observerX, observerY, 1.6, 0, Math.PI * 2);
+    overheadContext.fillStyle = '#f4e3a1';
+    overheadContext.fill();
   }
 
   // ============ 空(円形パノラマ) ============
@@ -506,6 +521,7 @@ function main() {
     document.getElementById('latitude-value-label').textContent =
       (state.latitudeDegrees >= 0 ? '+' : '') + state.latitudeDegrees.toFixed(1) + '°' +
       (Math.abs(state.latitudeDegrees - 35.7) < 0.01 ? '(東京)' : '');
+    document.getElementById('trail-window-days').textContent = String(trailWindowDaySlider.value) + '日分';
 
     drawOverheadView(state);
     const sunHorizontal = drawSkyPanorama(state);
@@ -519,7 +535,7 @@ function main() {
     document.getElementById('readout-zodiac-sign').textContent = zodiacSignNames[currentZodiacIndex(state.sunEclipticLongitudeDegrees)];
   }
 
-  [dayOfYearSlider, hourSlider, latitudeSlider].forEach(el => el.addEventListener('input', render));
+  [dayOfYearSlider, hourSlider, latitudeSlider, trailWindowDaySlider].forEach(el => el.addEventListener('input', render));
 
   function stopHourAnimation() {
     hourAnimating = false;
